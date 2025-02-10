@@ -1,17 +1,32 @@
 package main
 
 import (
-  "net/http"
-  "github.com/gin-gonic/gin"
+	"flag"
+	"fmt"
+	"link-shortener/internal/storage"
+	"os"
 )
 
 func main() {
-  r := gin.Default()
-  r.GET("/ping", func(c *gin.Context) {
-    c.JSON(http.StatusOK, gin.H{
-      "message": "pong",
-    })
-  })
+	storageType := flag.String("storage", "ram", "Storage backend to use: 'ram' or 'postgres'")
+	flag.Parse()
 
-  r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	var store storage.Storage
+	switch *storageType {
+	case "postgres":
+		{
+			fmt.Println("Postgres storage selected, but not implemented yet")
+			os.Exit(0)
+		}
+	case "ram":
+		{
+			store = storage.NewRAMStorage()
+		}
+	default:
+		{
+			fmt.Println("Wrong storage type")
+		}
+	}
+
+	fmt.Printf("Storage %T created successfully\n", store)
 }

@@ -12,12 +12,15 @@ var (
 
 type RAMStorage struct {
     mu    sync.RWMutex
-    store map[string]string // key: shortURL, value: originalURL
+    // key: shortURL, value: originalURL
+    forwardMap map[string]string
+    // key: originalURL, value: shortURL
+	reverseMap  map[string]string
 }
 
 func NewRAMStorage() *RAMStorage {
     return &RAMStorage{
-        store: make(map[string]string),
+        forwardMap: make(map[string]string),
     }
 }
 
@@ -25,10 +28,11 @@ func (r *RAMStorage) Save(originalURL, shortURL string) error {
     r.mu.Lock()
     defer r.mu.Unlock()
 
-	if _, exists := r.store[shortURL]; exists {
+	if _, exists := r.forwardMap[shortURL]; exists {
         return ErrShortURLExists
     }
-    r.store[shortURL] = originalURL
+    r.forwardMap[shortURL] = originalURL
+    r.reverseMap[originalURL] = shortURL
     return nil
 }
 
@@ -37,9 +41,17 @@ func (r *RAMStorage) Get(shortURL string) (string, error) {
     r.mu.RLock()
     defer r.mu.RUnlock()
 
-    original, exists := r.store[shortURL]
+    original, exists := r.forwardMap[shortURL]
     if !exists {
         return "", ErrURLNotFound
     }
     return original, nil
+}
+
+func (r *RAMStorage) FindByOriginal(originalURL string) (string, error) {
+    short, exists := r.reverseMap[originalURL]
+	if !exists {
+		return "", ErrURLNotFound
+	}
+	return short, nil
 }

@@ -21,7 +21,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Failed to initialize postgres storage: %v", err)
 		}
-		} else if *storageType == "ram" {
+	} else if *storageType == "ram" {
 		store = storage.NewRAMStorage()
 	} else {
 		log.Fatal("Wrong storage type")

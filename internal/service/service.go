@@ -8,9 +8,8 @@ import (
 
 var ErrTooManyAttemps = errors.New("failed to generate a unique short URL after many attempts")
 
-
 func SaveURL(store storage.Storage, originalURL string) (string, error) {
-    if existing, err := store.FindByOriginal(originalURL); err == nil {
+	if existing, err := store.FindByOriginal(originalURL); err == nil {
 		return existing, nil
 	}
 	const maxRetries = 1000
@@ -27,7 +26,7 @@ func SaveURL(store storage.Storage, originalURL string) (string, error) {
 		if errors.Is(err, storage.ErrShortURLExists) {
 			continue
 		}
-        // another error, return
+		// another error, return
 		return "", err
 	}
 	return "", ErrTooManyAttemps

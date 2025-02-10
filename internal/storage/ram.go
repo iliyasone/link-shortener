@@ -5,6 +5,11 @@ import (
     "sync"
 )
 
+var (
+	ErrShortURLExists = errors.New("short URL already exists")
+	ErrURLNotFound = errors.New("URL not found")
+)
+
 type RAMStorage struct {
     mu    sync.RWMutex
     store map[string]string // key: shortURL, value: originalURL
@@ -21,7 +26,7 @@ func (r *RAMStorage) Save(originalURL, shortURL string) error {
     defer r.mu.Unlock()
 
 	if _, exists := r.store[shortURL]; exists {
-        return errors.New("short URL already exists")
+        return ErrShortURLExists
     }
     r.store[shortURL] = originalURL
     return nil
@@ -34,7 +39,7 @@ func (r *RAMStorage) Get(shortURL string) (string, error) {
 
     original, exists := r.store[shortURL]
     if !exists {
-        return "", errors.New("URL not found")
+        return "", ErrURLNotFound
     }
     return original, nil
 }

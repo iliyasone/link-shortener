@@ -1,13 +1,7 @@
 package storage
 
 import (
-    "errors"
-    "sync"
-)
-
-var (
-	ErrShortURLExists = errors.New("short URL already exists")
-	ErrURLNotFound = errors.New("URL not found")
+	"sync"
 )
 
 type RAMStorage struct {

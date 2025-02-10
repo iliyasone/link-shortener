@@ -1,5 +1,12 @@
 package storage
 
+import "errors"
+
+var (
+	ErrShortURLExists = errors.New("short URL already exists")
+	ErrURLNotFound = errors.New("URL not found")
+)
+
 type Storage interface {
     // Unsafe save a new short URL in the storage
     //

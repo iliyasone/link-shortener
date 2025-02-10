@@ -6,11 +6,13 @@ import (
 	"link-shortener/pkg/generator"
 )
 
+var ErrTooManyAttemps = errors.New("failed to generate a unique short URL after many attempts")
+
+
 func SaveURL(store storage.Storage, originalURL string) (string, error) {
     if existing, err := store.FindByOriginal(originalURL); err == nil {
 		return existing, nil
 	}
-
 	const maxRetries = 1000
 	defaultGenerator := generator.NewGenerator()
 	for i := 0; i < maxRetries; i++ {
@@ -28,6 +30,5 @@ func SaveURL(store storage.Storage, originalURL string) (string, error) {
         // another error, return
 		return "", err
 	}
-
-	return "", errors.New("failed to generate a unique short URL after many attempts")
+	return "", ErrTooManyAttemps
 }

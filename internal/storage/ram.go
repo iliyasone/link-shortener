@@ -21,6 +21,7 @@ type RAMStorage struct {
 func NewRAMStorage() *RAMStorage {
     return &RAMStorage{
         forwardMap: make(map[string]string),
+        reverseMap: make(map[string]string),
     }
 }
 

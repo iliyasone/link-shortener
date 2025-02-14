@@ -10,7 +10,8 @@ var (
 type Storage interface {
 	// Unsafe save a new short URL in the storage
 	//
-	// Note: does not check for uniqueness in either direction
+	// Note: does not check for uniqueness in reverse direction
+	// return ErrShortURLExists if shortURL alredy used
 	Save(originalURL, shortURL string) error
 	// Get original URL by short URL
 	Get(shortURL string) (string, error)

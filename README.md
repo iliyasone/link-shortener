@@ -88,7 +88,7 @@ docker compose -f docker-compose.ram.yml up --build
 ### Run the PostgreSQL (Database) Version
 To run with a persistent PostgreSQL backend (ensure your Docker environment is properly configured):
 ```bash
-docker compose -f docker-compose.db.yml up --build
+docker compose -f docker-compose.db.yml up --build -d
 ```
 
 ---

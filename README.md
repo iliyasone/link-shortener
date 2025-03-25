@@ -82,13 +82,13 @@ go test -v ./...
 ### Run the In-Memory (RAM) Version
 For quick testing with the in-memory storage backend:
 ```bash
-docker compose -f docker-compose.ram.yml up --build
+docker compose -f docker-compose.ram.yaml up --build
 ```
 
 ### Run the PostgreSQL (Database) Version
 To run with a persistent PostgreSQL backend (ensure your Docker environment is properly configured):
 ```bash
-docker compose -f docker-compose.db.yml up --build -d
+docker compose -f docker-compose.db.yaml up --build -d
 ```
 
 ---

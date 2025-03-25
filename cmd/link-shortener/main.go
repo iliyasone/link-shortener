@@ -15,6 +15,11 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
+// @title Link Shortener API
+// @version 0.1.0
+// @description A simple URL shortening service in Go.
+// @host localhost:8080
+// @BasePath /
 func main() {
 	storageType := flag.String("storage", "ram", "Storage backend to use: 'ram' or 'postgres'")
 	flag.Parse()

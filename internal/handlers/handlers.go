@@ -18,6 +18,18 @@ type ShortenResponse struct {
 	Error    string `json:"error,omitempty"`
 }
 
+// PostShortenURL shortens a given original URL and returns a short version.
+//
+// @Summary      Shorten a URL
+// @Description  Accepts an original URL and returns a shortened version.
+// @Tags         URL
+// @Accept       json
+// @Produce      json
+// @Param        request body ShortenRequest true "Original URL payload"
+// @Success      200 {object} ShortenResponse
+// @Failure      400 {object} ShortenResponse
+// @Failure      500 {object} ShortenResponse
+// @Router       /shorten [post]
 func PostShortenURL(store storage.Storage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var req ShortenRequest
@@ -41,6 +53,17 @@ func PostShortenURL(store storage.Storage) gin.HandlerFunc {
 	}
 }
 
+// GetOriginalURL resolves a short URL to its original form.
+//
+// @Summary      Resolve short URL
+// @Description  Retrieves the original URL based on the short URL.
+// @Tags         URL
+// @Produce      json
+// @Param        shortURL path string true "Short URL"
+// @Success      200 {object} map[string]string
+// @Failure      400 {object} map[string]string
+// @Failure      404 {object} map[string]string
+// @Router       /{shortURL} [get]
 func GetOriginalURL(store storage.Storage) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		shortURL := c.Param("shortURL")

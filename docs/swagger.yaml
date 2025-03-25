@@ -1,4 +1,85 @@
+basePath: /
+definitions:
+  handlers.ShortenRequest:
+    properties:
+      originalURL:
+        type: string
+    type: object
+  handlers.ShortenResponse:
+    properties:
+      error:
+        type: string
+      shortURL:
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact: {}
-paths: {}
+  description: A simple URL shortening service in Go.
+  title: Link Shortener API
+  version: 0.1.0
+paths:
+  /{shortURL}:
+    get:
+      description: Retrieves the original URL based on the short URL.
+      parameters:
+      - description: Short URL
+        in: path
+        name: shortURL
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Resolve short URL
+      tags:
+      - URL
+  /shorten:
+    post:
+      consumes:
+      - application/json
+      description: Accepts an original URL and returns a shortened version.
+      parameters:
+      - description: Original URL payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ShortenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.ShortenResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ShortenResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ShortenResponse'
+      summary: Shorten a URL
+      tags:
+      - URL
 swagger: "2.0"

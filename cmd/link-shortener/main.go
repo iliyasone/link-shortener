@@ -8,6 +8,11 @@ import (
 	"link-shortener/internal/storage"
 
 	"github.com/gin-gonic/gin"
+
+	_ "link-shortener/docs"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 func main() {
@@ -30,6 +35,8 @@ func main() {
 	r := gin.Default()
 	r.POST("/shorten", handlers.PostShortenURL(store))
 	r.GET("/:shortURL", handlers.GetOriginalURL(store))
+
+	r.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	log.Println("Server is running on http://localhost:8080")
 	if err := r.Run(":8080"); err != nil {
